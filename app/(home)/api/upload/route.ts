@@ -1,8 +1,8 @@
+import { extractTextFromPdf } from "@/app/features/extract-pdf";
 import pool from "@/lib/pg-db";
 import { openai } from "@ai-sdk/openai";
 import { embed } from "ai";
 import { NextRequest, NextResponse } from "next/server";
-import pdfParse from "pdf-parse/lib/pdf-parse.js"; // ✅ this is correct
 
 export async function POST(req: NextRequest) {
   const formData = await req.formData();
@@ -17,8 +17,7 @@ export async function POST(req: NextRequest) {
   try {
     let text = "";
     if (file.name.endsWith(".pdf")) {
-      const pdfData = await pdfParse(buffer);
-      text = pdfData.text;
+      text = await extractTextFromPdf(buffer);
     } else {
       text = buffer.toString("utf8");
     }
@@ -43,6 +42,10 @@ export async function POST(req: NextRequest) {
         [textArr[i], `[${embeddings[i].join(",")}]`]
       );
     }
+    return NextResponse.json(
+      { message: "Embeddings stored successfully" },
+      { status: 200 }
+    );
   } catch {
     return NextResponse.json({ message: "error fetching data" });
   }
