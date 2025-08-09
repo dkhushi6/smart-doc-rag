@@ -8,11 +8,22 @@ const Upload = () => {
   const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
     const formData = new FormData();
     formData.append("file", file);
-    const res = await axios.post("/api/upload", formData);
-    console.log(res.data);
+
+    try {
+      const res = await fetch("/api/practice-upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      console.log(data);
+    } catch (err) {
+      console.error(err);
+    }
   };
+
   return (
     <div>
       <div className="grid w-full max-w-sm items-center gap-3 ">

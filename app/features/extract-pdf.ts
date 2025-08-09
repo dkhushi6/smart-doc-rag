@@ -1,7 +1,9 @@
 import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.js";
 
 export async function extractTextFromPdf(buffer: Buffer): Promise<string> {
-  const loadingTask = pdfjsLib.getDocument({ data: buffer });
+  // Convert Node Buffer → Uint8Array
+  const uint8Array = new Uint8Array(buffer);
+  const loadingTask = pdfjsLib.getDocument({ data: uint8Array });
   const pdf = await loadingTask.promise;
 
   let fullText = "";
