@@ -13,7 +13,7 @@ const Upload = () => {
     formData.append("file", file);
 
     try {
-      const res = await fetch("/api/practice-upload", {
+      const res = await fetch("/api/upload", {
         method: "POST",
         body: formData,
       });
