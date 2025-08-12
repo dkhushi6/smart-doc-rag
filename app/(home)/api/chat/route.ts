@@ -9,8 +9,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "user messages not found" });
   }
   let prompt: string | undefined;
-  if (messages[0]?.parts[0]?.type === "text") {
-    prompt = messages[0].parts[0].text;
+  console.log(messages);
+  console.log(messages.length);
+  if (messages[messages.length - 1]?.parts[0]?.type === "text") {
+    prompt = messages[messages.length - 1].parts[0].text;
   }
 
   if (!prompt) {
